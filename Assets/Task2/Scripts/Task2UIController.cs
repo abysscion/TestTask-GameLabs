@@ -15,17 +15,33 @@ namespace Task2
 		[SerializeField] private StationLinesContainer linesContainer;
 
 		private Dictionary<OptionData, StationPoint> optionDataToStationPointDic;
+		private StationPointsPathFinder _pathFinder;
 
 		private void Start()
 		{
 			FillDropDownsOptions();
+			_pathFinder = new StationPointsPathFinder(linesContainer.GetLines());
+			inputFieldResult.gameObject.SetActive(false);
 			dropdownFrom.onValueChanged.AddListener(OnAnyDropdownChanged);
 			dropdownTo.onValueChanged.AddListener(OnAnyDropdownChanged);
 		}
 
 		private void OnAnyDropdownChanged(int _)
 		{
+			var from = optionDataToStationPointDic[dropdownFrom.options[dropdownFrom.value]];
+			var to = optionDataToStationPointDic[dropdownTo.options[dropdownTo.value]];
+			var path = _pathFinder.FindPathFromTo(from, to);
 
+			if (path != null && path.points.Count > 0)
+			{
+				inputFieldResult.text = $"Line changes: {path.lineChanges}. Path: {path}";
+				inputFieldResult.gameObject.SetActive(true);
+			}
+			else
+			{
+				Debug.LogError($"Unable to find path from {from} to {to}");
+				inputFieldResult.gameObject.SetActive(false);
+			}
 		}
 
 		private void FillDropDownsOptions()
@@ -46,6 +62,8 @@ namespace Task2
 					optionDataToStationPointDic.Add(option, point);
 				}
 			}
+			dropdownFrom.RefreshShownValue();
+			dropdownTo.RefreshShownValue();
 		}
 	}
 }

@@ -8,7 +8,7 @@ namespace Task2
 		[SerializeField] private StationLine[] lines;
 		[SerializeField] private List<ConnectionList> listOfConnectionList;
 
-		private Dictionary<Transform, StationPoint> _tfToStationPoint;
+		private Dictionary<Transform, StationPoint> _tfToStationPointDic;
 
 		private void OnValidate()
 		{
@@ -27,7 +27,7 @@ namespace Task2
 		{
 			var linesCount = transform.childCount;
 
-			_tfToStationPoint = new Dictionary<Transform, StationPoint>();
+			_tfToStationPointDic = new Dictionary<Transform, StationPoint>();
 			for (var i = 0; i < linesCount; i++)
 			{
 				var lineTf = transform.GetChild(i);
@@ -48,7 +48,7 @@ namespace Task2
 						points[j].next = points[0];
 						points[0].prev = points[j];
 					}
-					_tfToStationPoint.Add(pointTf, points[j]);
+					_tfToStationPointDic.Add(pointTf, points[j]);
 				}
 				lines[i].InstallPoints(points);
 			}
@@ -61,7 +61,7 @@ namespace Task2
 				var linkedPoints = new StationPoint[connectionsList.connectedTfs.Count];
 				for (var i = 0; i < linkedPoints.Length; i++)
 				{
-					if (_tfToStationPoint.TryGetValue(connectionsList.connectedTfs[i], out var point))
+					if (_tfToStationPointDic.TryGetValue(connectionsList.connectedTfs[i], out var point))
 						linkedPoints[i] = point;
 				}
 				foreach (var point in linkedPoints)
