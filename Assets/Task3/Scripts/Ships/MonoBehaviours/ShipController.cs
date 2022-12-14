@@ -13,10 +13,14 @@ namespace Ships
 		//protected Dictionary<Creature, CreatureDeck> creatureToCreaturesDecksDic;
 		//protected HashSet<Creature> actedCreatures;
 
+		private Ship _ship;
+
 		public event Action<GameTeamType> AllCreaturesActed;
 		public event Action<GameTeamType> AllCreaturesDied;
 
 		public GameTeamType Team => team;
+
+		public Ship Ship => _ship;
 
 		protected virtual void Start()
 		{

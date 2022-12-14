@@ -28,10 +28,10 @@ MonoBehaviour:
   - type: 6
     value: 0
   availablePassives:
+  - {fileID: 11400000, guid: f86e8c5eb737b2948a36f73b0d419068, type: 2}
   - {fileID: 11400000, guid: 3ae72719222c7dd468ce9dd6edfcee6c, type: 2}
   - {fileID: 11400000, guid: f3bb5d7f9974dfc4bb7fd3c14e9600ad, type: 2}
   - {fileID: 11400000, guid: 49e3f0c03884655479d77aa687d240de, type: 2}
-  - {fileID: 11400000, guid: f86e8c5eb737b2948a36f73b0d419068, type: 2}
   availableWeapons:
   - {fileID: 11400000, guid: f98ffd1e39ee3434280e450f334fe5be, type: 2}
   - {fileID: 11400000, guid: a93402e7bfc1ceb469802c8979c51537, type: 2}

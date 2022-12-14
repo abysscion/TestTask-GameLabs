@@ -8,7 +8,7 @@ namespace Ships
 		[SerializeField, Min(0.01f)] private float attackDelay;
 		[SerializeField, Min(0.01f)] private float damage;
 
-		public float AttackDelay => attackDelay;
+		public float Cooldown => attackDelay;
 		public float Damage => damage;
 	}
 }

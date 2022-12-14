@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00318ff033a287d41bdcf8d706d6d464, type: 3}
   m_Name: ModuleConfig_Passive_PassiveD
   m_EditorClassIdentifier: 
-  moduleName: Passive C
+  moduleName: Passive D
   statModifiers:
   - type: 5
     value: 0.2

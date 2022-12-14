@@ -1,43 +1,75 @@
-﻿using TMPro;
+﻿using System;
+using Ships;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Utilities.Components;
+using static TMPro.TMP_Dropdown;
 
 namespace CoreGameplay
 {
-	public class UIShipsBuildingWindowController : MonoSingleton<UIShipsBuildingWindowController>
+	public class UIShipsBuildingWindowController : MonoBehaviour
 	{
-		[SerializeField] private GameObject gameOverPanel;
-		[SerializeField] private TMP_Text currentTurnText;
-		[SerializeField] private TMP_Text winnerText;
-		[SerializeField] private Button endTurnButton;
-		[SerializeField] private Button restartButton;
+		[SerializeField] private TMP_Dropdown moduleDropdownPrefab;
+		[SerializeField] private Button confirmButton;
+		[SerializeField] private UIShipConfigData[] shipConfigDatas;
 
-		public Button.ButtonClickedEvent EndTurnButtonClicked => endTurnButton.onClick;
-		public Button.ButtonClickedEvent RestartButtonClicked => restartButton.onClick;
+		public Button.ButtonClickedEvent EndTurnButtonClicked => confirmButton.onClick;
 
-		public override void Initialize()
+		private void Start()
 		{
-			GameController.TurnStarted += OnTurnStarted;
-			GameController.TeamWon += OnAnyTeamWon;
-			OnTurnStarted(GameController.Instance.CurrentTeamTurn);
+			ClearLayoutGroups();
+			FillLayoutGroups();
 		}
 
-		private void OnDestroy()
+		private void ClearLayoutGroups()
 		{
-			GameController.TurnStarted -= OnTurnStarted;
+			foreach (var shipConfigData in shipConfigDatas)
+			{
+				for (var i = 0; i < shipConfigData.passivesLayoutGroup.transform.childCount; i++)
+					Destroy(shipConfigData.passivesLayoutGroup.transform.GetChild(i).gameObject);
+				for (var i = 0; i < shipConfigData.weaponsLayoutGroup.transform.childCount; i++)
+					Destroy(shipConfigData.weaponsLayoutGroup.transform.GetChild(i).gameObject);
+			}
 		}
 
-		private void OnTurnStarted(GameTeamType teamTurn)
+		private void FillLayoutGroups()
 		{
-			endTurnButton.gameObject.SetActive(teamTurn == GameTeamType.Player);
-			currentTurnText.text = $"{teamTurn}";
+			foreach (var shipConfigData in shipConfigDatas)
+			{
+				for (var i = 0; i < shipConfigData.config.PassiveSlotsCount; i++)
+				{
+					var dropdown = Instantiate(moduleDropdownPrefab, shipConfigData.passivesLayoutGroup.transform);
+
+					dropdown.ClearOptions();
+					foreach (var passiveConfig in shipConfigData.config.GetAvailablePassivesConfigs())
+					{
+						var optionData = new OptionData($"{passiveConfig.ModuleName}");
+						dropdown.options.Add(optionData);
+					}
+					dropdown.RefreshShownValue();
+				}
+
+				for (var i = 0; i < shipConfigData.config.WeaponSlotsCount; i++)
+				{
+					var dropdown = Instantiate(moduleDropdownPrefab, shipConfigData.weaponsLayoutGroup.transform);
+
+					dropdown.ClearOptions();
+					foreach (var weaponConfig in shipConfigData.config.GetAvailableWeaponsConfigs())
+					{
+						var optionData = new OptionData($"{weaponConfig.ModuleName}");
+						dropdown.options.Add(optionData);
+					}
+					dropdown.RefreshShownValue();
+				}
+			}
 		}
 
-		private void OnAnyTeamWon(GameTeamType teamTurn)
+		[Serializable]
+		private class UIShipConfigData
 		{
-			gameOverPanel.SetActive(true);
-			winnerText.text = $"Winner: {teamTurn}";
+			public VerticalLayoutGroup passivesLayoutGroup;
+			public VerticalLayoutGroup weaponsLayoutGroup;
+			public ShipConfig config;
 		}
 	}
 }
