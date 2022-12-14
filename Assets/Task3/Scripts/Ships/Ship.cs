@@ -5,22 +5,38 @@ namespace Ships
 {
 	public class Ship
 	{
+		private const float DELTA_TIME_FOR_SPECIAL_STATS = 1f;
 		private ShipStatsContainer _stats;
 		private ShipWeapon[] _weapons;
 		private ShipConfig _config;
+		private float _lastTimeStatsWereProcessed;
 
 		public event Action Died;
 
 		public ShipStatsContainer Stats => _stats;
+		public string Name => _config.ShipName;
 
 		public Ship(ShipConfig config, ShipModuleWeaponConfig[] weaponConfigs, ShipModulePassiveConfig[] passiveConfigs,
-					out IReadOnlyCollection<ShipWeapon> weapons)
+					out IReadOnlyCollection<ShipWeapon> weapons, out Action<float> processShipSpecialStatsMethod)
 		{
 			_config = config;
 			_stats = new ShipStatsContainer(_config);
 			weapons = CreateWeapons(weaponConfigs);
 			ApplyPassives(passiveConfigs);
+			processShipSpecialStatsMethod = ProcessShipSpecialStats;
 			Stats.AddSubscriberToValueChanged(ShipStatType.Health, OnHealthChanged);
+		}
+
+		private void ProcessShipSpecialStats(float currentTime)
+		{
+			if ((currentTime - _lastTimeStatsWereProcessed) < DELTA_TIME_FOR_SPECIAL_STATS)
+				return;
+
+			var missingShield = Stats[ShipStatType.MaxShield] - Stats[ShipStatType.Shield];
+			var shieldRegen = Stats[ShipStatType.ShieldRegenRate] + Stats[ShipStatType.ShieldRegenRate] * Stats[ShipStatType.ShieldRegenRateMultiplier];
+
+			Stats.AddValue(ShipStatType.Shield, Math.Clamp(shieldRegen, 0f, missingShield));
+			_lastTimeStatsWereProcessed = currentTime;
 		}
 
 		private IReadOnlyCollection<ShipWeapon> CreateWeapons(ShipModuleWeaponConfig[] weaponConfigs)

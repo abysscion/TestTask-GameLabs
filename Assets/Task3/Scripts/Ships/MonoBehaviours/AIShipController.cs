@@ -1,49 +1,59 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using CoreGameplay;
+using UnityEngine;
+using static CoreGameplay.UIShipsBuildingWindowController;
 
 namespace Ships
 {
-	public class AIShipController : ShipController
+	public class AIShipController : MonoBehaviour
 	{
-		protected override void Start()
-		{
-			base.Start();
+		[SerializeField] private ShipType shipType;
 
-			GameController.GameInitialized += OnGameInitialized;
+		private IReadOnlyCollection<ShipWeapon> _shipWeapons;
+		private Ship _ship;
+		private bool _shipCreated;
+
+		public Action ShipCreated;
+		private Action<float> _processShipSpecialStatsMethod;
+
+		public Ship Ship => _ship;
+
+		private void Awake()
+		{
+			UIMainCanvasController.Instance.ShipBuildingWindow.ConfirmButtonClicked += OnConfirmButtonClicked;
 		}
 
-		protected override void OnDestroy()
+		private void Update()
 		{
-			base.OnDestroy();
+			if (!_shipCreated)
+				return;
 
-			GameController.GameInitialized -= OnGameInitialized;
-			GameController.TurnStarted -= OnTurnStarted;
-			GameController.TurnEnded -= OnTurnEnded;
+			var enemyShip = shipType == ShipType.A ? GameController.Instance.ShipB : GameController.Instance.ShipA;
+			foreach (var weapon in _shipWeapons)
+			{
+				if (weapon.TryUseWeapon(enemyShip, Time.time, out var message))
+					Debug.Log(message);
+			}
+			_processShipSpecialStatsMethod.Invoke(Time.time);
 		}
 
-		private void OnGameInitialized()
+		private void OnConfirmButtonClicked(SelectedShipData shipAData, SelectedShipData shipBData)
 		{
-			GameController.TurnStarted += OnTurnStarted;
-			GameController.TurnEnded += OnTurnEnded;
-			if (GameController.Instance.CurrentTeamTurn == Team)
-				OnTurnStarted(Team);
-		}
+			var shipData = shipType == ShipType.A ? shipAData : shipBData;
 
-		private void OnTurnStarted(GameTeamType teamTurn)
-		{
-			if (teamTurn == Team)
-				StartCoroutine(AIAttackCoroutine());
-		}
-
-		private void OnTurnEnded(GameTeamType teamTurn)
-		{
-			if (teamTurn == Team)
-				StopAllCoroutines();
+			_ship = new Ship(shipData.config, shipData.weaponConfigs.ToArray(), shipData.passiveConfigs.ToArray(),
+								out _shipWeapons, out _processShipSpecialStatsMethod);
+			_shipCreated = true;
+			ShipCreated?.Invoke();
 		}
 
 		private IEnumerator AIAttackCoroutine()
 		{
 			yield return null;
 		}
+
+		private enum ShipType { A, B }
 	}
 }

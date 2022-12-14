@@ -2241,6 +2241,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5625741655482590182, guid: c9ec478055fd6ff4f842e46605df4dd9, type: 3}
+      propertyPath: config
+      value: 
+      objectReference: {fileID: 11400000, guid: 7dfdba28813cf39438f882000fced3ed, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c9ec478055fd6ff4f842e46605df4dd9, type: 3}
 --- !u!4 &379478915 stripped
@@ -2248,6 +2252,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5625741655482590181, guid: c9ec478055fd6ff4f842e46605df4dd9, type: 3}
   m_PrefabInstance: {fileID: 379478914}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &379478916 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5625741655482590182, guid: c9ec478055fd6ff4f842e46605df4dd9, type: 3}
+  m_PrefabInstance: {fileID: 379478914}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8f82c61c2bc77c44be55b61452c39c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &398128874
 GameObject:
   m_ObjectHideFlags: 0
@@ -5469,6 +5484,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5625741655482590182, guid: c9ec478055fd6ff4f842e46605df4dd9, type: 3}
+      propertyPath: config
+      value: 
+      objectReference: {fileID: 11400000, guid: a49b7548e7fbb64428d847d213f517dd, type: 2}
+    - target: {fileID: 5625741655482590182, guid: c9ec478055fd6ff4f842e46605df4dd9, type: 3}
+      propertyPath: shipType
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c9ec478055fd6ff4f842e46605df4dd9, type: 3}
 --- !u!4 &1092082370 stripped
@@ -7488,8 +7511,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   autoInitializeOnStart: 1
   dontDestroyOnLoad: 0
-  playerCreatures: {fileID: 0}
-  aiCreatures: {fileID: 0}
+  shipControllerA: {fileID: 379478916}
+  shipControllerB: {fileID: 1805623082}
 --- !u!1 &1499726588
 GameObject:
   m_ObjectHideFlags: 0
@@ -9807,6 +9830,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1805623082 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5625741655482590182, guid: c9ec478055fd6ff4f842e46605df4dd9, type: 3}
+  m_PrefabInstance: {fileID: 1092082369}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8f82c61c2bc77c44be55b61452c39c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1814755063
 GameObject:
   m_ObjectHideFlags: 0
@@ -11359,8 +11393,9 @@ GameObject:
   - component: {fileID: 1989839006}
   - component: {fileID: 1989839005}
   - component: {fileID: 1989839004}
+  - component: {fileID: 1989839007}
   m_Layer: 0
-  m_Name: Canvas
+  m_Name: MainCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11448,6 +11483,22 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &1989839007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1989839002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07ec8755bb6b90f4ab4b159a4e215330, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  autoInitializeOnStart: 1
+  dontDestroyOnLoad: 0
+  shipBuildingWindow: {fileID: 2104122728}
+  gameOverPanel: {fileID: 0}
 --- !u!1 &1993535202
 GameObject:
   m_ObjectHideFlags: 0

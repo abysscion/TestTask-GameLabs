@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Ships;
 using TMPro;
 using UnityEngine;
@@ -13,12 +14,13 @@ namespace CoreGameplay
 		[SerializeField] private Button confirmButton;
 		[SerializeField] private UIShipConfigData[] shipConfigDatas;
 
-		public Button.ButtonClickedEvent EndTurnButtonClicked => confirmButton.onClick;
+		public Action<SelectedShipData, SelectedShipData> ConfirmButtonClicked;
 
 		private void Start()
 		{
 			ClearLayoutGroups();
 			FillLayoutGroups();
+			confirmButton.onClick.AddListener(OnConfirmButtonClicked);
 		}
 
 		private void ClearLayoutGroups()
@@ -64,12 +66,54 @@ namespace CoreGameplay
 			}
 		}
 
+		private void OnConfirmButtonClicked()
+		{
+			var shipDatas = GatherShipDatas();
+			ConfirmButtonClicked?.Invoke(shipDatas[0], shipDatas[1]);
+		}
+
+		private SelectedShipData[] GatherShipDatas()
+		{
+			var selectedShipDatas = new SelectedShipData[2];
+			var shipConfigDataA = shipConfigDatas[0];
+			var shipConfigDataB = shipConfigDatas[1];
+			var shipAWeaponConfigs = shipConfigDataA.config.GetAvailableWeaponsConfigs();
+			var shipAPassiveConfigs = shipConfigDataA.config.GetAvailablePassivesConfigs();
+			var shipBWeaponConfigs = shipConfigDataB.config.GetAvailableWeaponsConfigs();
+			var shipBPassiveConfigs = shipConfigDataB.config.GetAvailablePassivesConfigs();
+
+			selectedShipDatas[0].config = shipConfigDataA.config;
+			selectedShipDatas[0].weaponConfigs = new List<ShipModuleWeaponConfig>();
+			foreach (var dropdown in shipConfigDataA.weaponsLayoutGroup.GetComponentsInChildren<TMP_Dropdown>())
+				selectedShipDatas[0].weaponConfigs.Add(shipAWeaponConfigs[dropdown.value]);
+			selectedShipDatas[0].passiveConfigs = new List<ShipModulePassiveConfig>();
+			foreach (var dropdown in shipConfigDataA.passivesLayoutGroup.GetComponentsInChildren<TMP_Dropdown>())
+				selectedShipDatas[0].passiveConfigs.Add(shipAPassiveConfigs[dropdown.value]);
+
+			selectedShipDatas[1].config = shipConfigDataB.config;
+			selectedShipDatas[1].weaponConfigs = new List<ShipModuleWeaponConfig>();
+			foreach (var dropdown in shipConfigDataB.weaponsLayoutGroup.GetComponentsInChildren<TMP_Dropdown>())
+				selectedShipDatas[1].weaponConfigs.Add(shipBWeaponConfigs[dropdown.value]);
+			selectedShipDatas[1].passiveConfigs = new List<ShipModulePassiveConfig>();
+			foreach (var dropdown in shipConfigDataB.passivesLayoutGroup.GetComponentsInChildren<TMP_Dropdown>())
+				selectedShipDatas[1].passiveConfigs.Add(shipBPassiveConfigs[dropdown.value]);
+
+			return selectedShipDatas;
+		}
+
 		[Serializable]
 		private class UIShipConfigData
 		{
 			public VerticalLayoutGroup passivesLayoutGroup;
 			public VerticalLayoutGroup weaponsLayoutGroup;
 			public ShipConfig config;
+		}
+
+		public struct SelectedShipData
+		{
+			public ShipConfig config;
+			public List<ShipModuleWeaponConfig> weaponConfigs;
+			public List<ShipModulePassiveConfig> passiveConfigs;
 		}
 	}
 }

@@ -7,14 +7,16 @@ namespace Ships
 	[CreateAssetMenu(fileName = "NewShipConfig", menuName = "Configs/Create ship config")]
 	public class ShipConfig : ScriptableObject
 	{
+		[SerializeField] private string shipName;
+		[SerializeField] private int passiveSlotsCount;
+		[SerializeField] private int weaponSlotsCount;
 		[SerializeField] private List<ShipStatModifier> statsSettings;
 		[SerializeField] private List<ShipModulePassiveConfig> availablePassives;
 		[SerializeField] private List<ShipModuleWeaponConfig> availableWeapons;
-		[SerializeField] private int weaponSlotsCount;
-		[SerializeField] private int passiveSlotsCount;
 
-		public int WeaponSlotsCount => weaponSlotsCount;
+		public string ShipName => shipName;
 		public int PassiveSlotsCount => passiveSlotsCount;
+		public int WeaponSlotsCount => weaponSlotsCount;
 
 		private void OnValidate()
 		{
@@ -42,8 +44,8 @@ namespace Ships
 			return result;
 		}
 
-		public IReadOnlyCollection<ShipModulePassiveConfig> GetAvailablePassivesConfigs() => availablePassives;
+		public IReadOnlyList<ShipModulePassiveConfig> GetAvailablePassivesConfigs() => availablePassives;
 
-		public IReadOnlyCollection<ShipModuleWeaponConfig> GetAvailableWeaponsConfigs() => availableWeapons;
+		public IReadOnlyList<ShipModuleWeaponConfig> GetAvailableWeaponsConfigs() => availableWeapons;
 	}
 }

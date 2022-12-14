@@ -14,13 +14,15 @@
 			this.owner = owner;
 		}
 
-		public virtual bool TryUseWeapon(Ship target, float currentTime)
+		public virtual bool TryUseWeapon(Ship target, float currentTime, out string useMessage)
 		{
+			useMessage = string.Empty;
 			if (target == null || (currentTime - lastUsageTime) < AttackDelay)
 				return false;
 
 			lastUsageTime = currentTime;
 			DealDamageToTarget(target, config.Damage); // _config.Damage * _owner.Stats.DamageMultiplier
+			useMessage = $"{owner.Name} used {config.name} against {target.Name} for {config.Damage} damage.";
 			return true;
 		}
 

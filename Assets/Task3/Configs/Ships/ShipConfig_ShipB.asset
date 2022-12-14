@@ -12,6 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7a706d8a9be34b4eae6e15b167f4de9, type: 3}
   m_Name: ShipConfig_ShipB
   m_EditorClassIdentifier: 
+  shipName: Ship B
+  passiveSlotsCount: 3
+  weaponSlotsCount: 2
   statsSettings:
   - type: 0
     value: 60
@@ -36,5 +39,3 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f98ffd1e39ee3434280e450f334fe5be, type: 2}
   - {fileID: 11400000, guid: a93402e7bfc1ceb469802c8979c51537, type: 2}
   - {fileID: 11400000, guid: fc87b6114e5bf594daa4f2104f9d3854, type: 2}
-  weaponSlotsCount: 2
-  passiveSlotsCount: 3
