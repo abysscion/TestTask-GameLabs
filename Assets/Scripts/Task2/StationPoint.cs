@@ -1,43 +1,46 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StationPoint
+namespace Task2
 {
-	public StationPoint prev, next;
-
-	public readonly StationLine line;
-	public readonly Transform tf;
-
-	private StationPoint[] _links;
-
-	public IReadOnlyCollection<StationPoint> Links => _links;
-
-	public StationPoint(StationLine line, Transform tf)
+	public class StationPoint
 	{
-		this.line = line;
-		this.tf = tf;
-	}
+		public StationPoint prev, next;
 
-	public void InstallLinks(StationPoint[] links)
-	{
-		if (links == null || links.Length <= 0)
+		public readonly StationLine line;
+		public readonly Transform tf;
+
+		private StationPoint[] _links;
+
+		public IReadOnlyCollection<StationPoint> Links => _links;
+
+		public StationPoint(StationLine line, Transform tf)
 		{
-			_links = new StationPoint[0];
-			return;
+			this.line = line;
+			this.tf = tf;
 		}
 
-		var candidatePoints = new List<StationPoint>(links);
-
-		for (var i = 0; i < candidatePoints.Count; i++)
+		public void InstallLinks(StationPoint[] links)
 		{
-			var candidate = candidatePoints[i];
-			if (candidate == null || candidate == this)
+			if (links == null || links.Length <= 0)
 			{
-				candidatePoints.Remove(candidate);
-				i--;
+				_links = new StationPoint[0];
+				return;
 			}
-		}
 
-		_links = candidatePoints.ToArray();
+			var candidatePoints = new List<StationPoint>(links);
+
+			for (var i = 0; i < candidatePoints.Count; i++)
+			{
+				var candidate = candidatePoints[i];
+				if (candidate == null || candidate == this)
+				{
+					candidatePoints.Remove(candidate);
+					i--;
+				}
+			}
+
+			_links = candidatePoints.ToArray();
+		}
 	}
 }
