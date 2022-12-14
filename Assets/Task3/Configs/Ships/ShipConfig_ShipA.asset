@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7a706d8a9be34b4eae6e15b167f4de9, type: 3}
+  m_Name: ShipConfig_ShipA
+  m_EditorClassIdentifier: 
+  statsSettings:
+  - type: 0
+    value: 100
+  - type: 1
+    value: 100
+  - type: 2
+    value: 80
+  - type: 3
+    value: 80
+  - type: 4
+    value: 1
+  - type: 5
+    value: 0
+  - type: 6
+    value: 0
+  availablePassives:
+  - {fileID: 11400000, guid: f86e8c5eb737b2948a36f73b0d419068, type: 2}
+  - {fileID: 11400000, guid: 3ae72719222c7dd468ce9dd6edfcee6c, type: 2}
+  - {fileID: 11400000, guid: f3bb5d7f9974dfc4bb7fd3c14e9600ad, type: 2}
+  - {fileID: 11400000, guid: 49e3f0c03884655479d77aa687d240de, type: 2}
+  availableWeapons:
+  - {fileID: 11400000, guid: f98ffd1e39ee3434280e450f334fe5be, type: 2}
+  - {fileID: 11400000, guid: a93402e7bfc1ceb469802c8979c51537, type: 2}
+  - {fileID: 11400000, guid: fc87b6114e5bf594daa4f2104f9d3854, type: 2}
+  weaponSlotsCount: 2
+  passiveSlotsCount: 2
