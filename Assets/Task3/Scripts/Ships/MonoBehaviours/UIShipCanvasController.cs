@@ -19,7 +19,8 @@ namespace Ships
 
 		private void OnDestroy()
 		{
-			shipController.Ship.Stats.AnyStatChanged -= OnStatChanged;
+			if (shipController.Ship != null)
+				shipController.Ship.Stats.AnyStatChanged -= OnStatChanged;
 		}
 
 		private void OnStatChanged(ShipStatType _, float __) => UpdateView();

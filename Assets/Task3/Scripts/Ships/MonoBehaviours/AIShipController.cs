@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using CoreGameplay;
 using UnityEngine;
@@ -15,12 +14,12 @@ namespace Ships
 		private Ship _ship;
 		private bool _shipCreated;
 
-		public Action ShipCreated;
-		private Action<float> _processShipSpecialStatsMethod;
+		public event Action ShipCreated;
+		private event Action<float> _processShipSpecialStatsMethod;
 
 		public Ship Ship => _ship;
 
-		private void Awake()
+		private void Start()
 		{
 			UIMainCanvasController.Instance.ShipBuildingWindow.ConfirmButtonClicked += OnConfirmButtonClicked;
 		}
@@ -47,11 +46,6 @@ namespace Ships
 								out _shipWeapons, out _processShipSpecialStatsMethod);
 			_shipCreated = true;
 			ShipCreated?.Invoke();
-		}
-
-		private IEnumerator AIAttackCoroutine()
-		{
-			yield return null;
 		}
 
 		private enum ShipType { A, B }

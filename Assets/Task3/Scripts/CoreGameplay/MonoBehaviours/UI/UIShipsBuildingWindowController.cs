@@ -14,7 +14,7 @@ namespace CoreGameplay
 		[SerializeField] private Button confirmButton;
 		[SerializeField] private UIShipConfigData[] shipConfigDatas;
 
-		public Action<SelectedShipData, SelectedShipData> ConfirmButtonClicked;
+		public event Action<SelectedShipData, SelectedShipData> ConfirmButtonClicked;
 
 		private void Start()
 		{
@@ -70,6 +70,7 @@ namespace CoreGameplay
 		{
 			var shipDatas = GatherShipDatas();
 			ConfirmButtonClicked?.Invoke(shipDatas[0], shipDatas[1]);
+			gameObject.SetActive(false);
 		}
 
 		private SelectedShipData[] GatherShipDatas()
